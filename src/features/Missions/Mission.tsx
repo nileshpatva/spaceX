@@ -7,6 +7,8 @@ import { useAppSelector } from "../../app/hooks";
 export function Mission() {
   const missions = useAppSelector((state) => state.missions.missions);
   const searchTxt = useAppSelector((state) => state.missions.searchByRocket);
+  const isUpcoming = useAppSelector((state) => state.missions.isUpcoming);
+
   const launchStatus = useAppSelector(
     (state) => state.missions.launchStatusFilter
   );
@@ -25,6 +27,11 @@ export function Mission() {
       if (launchStatus === "Success") return m.launch_success;
       if (launchStatus === "Failure") return !m.launch_success;
     })
+    .filter((m) => {
+      if (isUpcoming === "None") return true;
+      if (isUpcoming === "Yes") return m.upcoming;
+      if (isUpcoming === "No") return !m.upcoming;
+    })
     .map((mission, idx) => {
       const {
         flight_number,
@@ -35,7 +42,12 @@ export function Mission() {
         links,
       } = mission;
       return (
-        <Grid style={{ border: "1px solid darkgrey" }} key={idx} item xs>
+        <Grid
+          style={{ border: "1px solid darkgrey", margin: "5px" }}
+          key={idx}
+          item
+          xs
+        >
           <Box className="image">
             <img
               width="290"

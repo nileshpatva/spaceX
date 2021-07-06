@@ -10,6 +10,7 @@ import FormControl from "@material-ui/core/FormControl";
 import { useAppDispatch } from "../../app/hooks";
 import { Mission } from "./Mission";
 import {
+  setIsUpcoming,
   setLaunchStatusFilter,
   setMissions,
   setSearchByRocketText,
@@ -20,6 +21,7 @@ export const MissionListing = () => {
   const [searchTxt, setSearchTxt] = useState("");
 
   const [selectedValue, setSelectedValue] = React.useState("None");
+  const [isUpcoming, setisUpcoming] = React.useState("None");
 
   const fetchMissions = async () => {
     try {
@@ -37,28 +39,34 @@ export const MissionListing = () => {
     fetchMissions();
   }, []);
 
-  const onSearch = (e: any) => {
-    setSearchTxt(e.target.value);
-    dispatch(setSearchByRocketText(e.target.value));
+  const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTxt(event.target.value);
+    dispatch(setSearchByRocketText(event.target.value));
   };
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(event.target.value);
     dispatch(setLaunchStatusFilter(event.target.value));
   };
+  const handleIsUpcomingChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setisUpcoming(event.target.value);
+    dispatch(setIsUpcoming(event.target.value));
+  };
 
   return (
     <div className="ui main container">
       <Grid container spacing={2} className="ui grid">
-        <div className="ui icon input">
+        <div>
           <TextField
             id="standard-basic"
             value={searchTxt}
             label="Search by rocket..."
-            onChange={(e) => onSearch(e)}
+            onChange={onSearch}
           />
         </div>
-        <div>
-          Filter by Launch Status:
+        <div style={{ border: "1px solid grey", padding: "5px" }}>
+          Launch Status:
           <RadioGroup
             row
             name="Success"
@@ -76,6 +84,19 @@ export const MissionListing = () => {
               control={<Radio />}
               label="Failure"
             />
+          </RadioGroup>
+        </div>
+        <div style={{ border: "1px solid grey", padding: "5px" }}>
+          Upcomming?:
+          <RadioGroup
+            row
+            name="Upcoming"
+            value={isUpcoming}
+            onChange={handleIsUpcomingChange}
+          >
+            <FormControlLabel value="None" control={<Radio />} label="None" />
+            <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+            <FormControlLabel value="No" control={<Radio />} label="No" />
           </RadioGroup>
         </div>
       </Grid>
