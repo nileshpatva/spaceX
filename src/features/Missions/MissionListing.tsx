@@ -11,6 +11,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { Mission } from "./Mission";
 import {
   setIsUpcoming,
+  setLaunchDateFilter,
   setLaunchStatusFilter,
   setMissions,
   setSearchByRocketText,
@@ -22,6 +23,7 @@ export const MissionListing = () => {
 
   const [selectedValue, setSelectedValue] = React.useState("None");
   const [isUpcoming, setisUpcoming] = React.useState("None");
+  const [launchDate, setlaunchDate] = React.useState("None");
 
   const fetchMissions = async () => {
     try {
@@ -52,6 +54,13 @@ export const MissionListing = () => {
   ) => {
     setisUpcoming(event.target.value);
     dispatch(setIsUpcoming(event.target.value));
+  };
+
+  const handleLaunchDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setlaunchDate(event.target.value);
+    dispatch(setLaunchDateFilter(event.target.value));
   };
 
   return (
@@ -97,6 +106,32 @@ export const MissionListing = () => {
             <FormControlLabel value="None" control={<Radio />} label="None" />
             <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
             <FormControlLabel value="No" control={<Radio />} label="No" />
+          </RadioGroup>
+        </div>
+        <div style={{ border: "1px solid grey", padding: "5px" }}>
+          Launch Date?:
+          <RadioGroup
+            row
+            name="Launch Date"
+            value={launchDate}
+            onChange={handleLaunchDateChange}
+          >
+            <FormControlLabel value="None" control={<Radio />} label="None" />
+            <FormControlLabel
+              value="last_week"
+              control={<Radio />}
+              label="Last week"
+            />
+            <FormControlLabel
+              value="last_month"
+              control={<Radio />}
+              label="Last month"
+            />
+            <FormControlLabel
+              value="last_year"
+              control={<Radio />}
+              label="Last year"
+            />
           </RadioGroup>
         </div>
       </Grid>

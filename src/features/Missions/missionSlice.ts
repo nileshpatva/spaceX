@@ -11,6 +11,7 @@ export const missionSlice = createSlice({
     searchByRocket: "",
     launchStatusFilter: "None",
     isUpcoming: "None",
+    launchDate: "None",
   },
   reducers: {
     setMissions(state, action: PayloadAction<Mission[]>) {
@@ -25,6 +26,9 @@ export const missionSlice = createSlice({
     setIsUpcoming(state, action: PayloadAction<string>) {
       state.isUpcoming = action.payload;
     },
+    setLaunchDateFilter(state, action: PayloadAction<string>) {
+      state.launchDate = action.payload;
+    },
   },
 });
 
@@ -33,6 +37,7 @@ export const {
   setSearchByRocketText,
   setLaunchStatusFilter,
   setIsUpcoming,
+  setLaunchDateFilter,
 } = missionSlice.actions;
 
 export default missionSlice.reducer;

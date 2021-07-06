@@ -8,6 +8,7 @@ export function Mission() {
   const missions = useAppSelector((state) => state.missions.missions);
   const searchTxt = useAppSelector((state) => state.missions.searchByRocket);
   const isUpcoming = useAppSelector((state) => state.missions.isUpcoming);
+  const launchDateFilter = useAppSelector((state) => state.missions.launchDate);
 
   const launchStatus = useAppSelector(
     (state) => state.missions.launchStatusFilter
@@ -31,6 +32,22 @@ export function Mission() {
       if (isUpcoming === "None") return true;
       if (isUpcoming === "Yes") return m.upcoming;
       if (isUpcoming === "No") return !m.upcoming;
+    })
+    .filter((m) => {
+      if (launchDateFilter === "None") return true;
+      let currDate = new Date();
+      let launch = new Date(m.launch_date_utc).getTime();
+      let prev = new Date();
+
+      if (launchDateFilter === "last_week") {
+        prev.setDate(currDate.getDate() - 7);
+      } else if (launchDateFilter === "last_month") {
+        prev.setMonth(currDate.getMonth() - 1);
+      } else if (launchDateFilter === "last_year") {
+        prev.setFullYear(currDate.getFullYear() - 1);
+      }
+
+      return launch >= prev.getTime() && launch <= currDate.getTime();
     })
     .map((mission, idx) => {
       const {
