@@ -9,6 +9,7 @@ export const missionSlice = createSlice({
   initialState: {
     missions: [] as Mission[],
     searchByRocket: "",
+    launchStatusFilter: "None",
   },
   reducers: {
     setMissions(state, action: PayloadAction<Mission[]>) {
@@ -17,9 +18,13 @@ export const missionSlice = createSlice({
     setSearchByRocketText(state, action: PayloadAction<string>) {
       state.searchByRocket = action.payload;
     },
+    setLaunchStatusFilter(state, action: PayloadAction<string>) {
+      state.launchStatusFilter = action.payload;
+    },
   },
 });
 
-export const { setMissions, setSearchByRocketText } = missionSlice.actions;
+export const { setMissions, setSearchByRocketText, setLaunchStatusFilter } =
+  missionSlice.actions;
 
 export default missionSlice.reducer;

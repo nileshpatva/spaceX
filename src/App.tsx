@@ -5,7 +5,7 @@ import "./App.css";
 
 function App() {
   return (
-    <div className="ui main container">
+    <div style={{ padding: "12px" }} className="ui main container">
       <Header />
       <MissionListing />
     </div>

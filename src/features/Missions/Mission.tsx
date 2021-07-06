@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
 
 import { useAppSelector } from "../../app/hooks";
 
 export function Mission() {
   const missions = useAppSelector((state) => state.missions.missions);
   const searchTxt = useAppSelector((state) => state.missions.searchByRocket);
+  const launchStatus = useAppSelector(
+    (state) => state.missions.launchStatusFilter
+  );
 
   const renderList = missions
     .filter((m) => {
@@ -14,6 +19,11 @@ export function Mission() {
         rocket_name.toLowerCase().includes(searchTxt.toLowerCase()) ||
         rocket_type.toLowerCase().includes(searchTxt.toLowerCase())
       );
+    })
+    .filter((m) => {
+      if (launchStatus === "None") return true;
+      if (launchStatus === "Success") return m.launch_success;
+      if (launchStatus === "Failure") return !m.launch_success;
     })
     .map((mission, idx) => {
       const {
@@ -25,17 +35,17 @@ export function Mission() {
         links,
       } = mission;
       return (
-        <div key={idx} className="ui card">
-          <div className="image">
+        <Grid style={{ border: "1px solid darkgrey" }} key={idx} item xs>
+          <Box className="image">
             <img
               width="290"
               height="290"
               src={links.mission_patch_small}
               loading="lazy"
             />
-          </div>
+          </Box>
           <div className="content">
-            <a className="header">{mission_name}</a>
+            <h3 className="header">{mission_name}</h3>
             <div className="meta">
               <span className="date">{launch_year}</span>
             </div>
@@ -46,7 +56,7 @@ export function Mission() {
             <br />
             <a> Rocket Type: {rocket.rocket_type}</a>
           </div>
-        </div>
+        </Grid>
       );
     });
 
